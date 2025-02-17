@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>{{title}}</h1>
+
+    <div>
+        <h2>Histórico de Compras</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome do Evento</th>
+                    <th>Quantidade</th>
+                    <th>Data da Compra</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#tickets}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{quantity}}</td>
+                        <td>{{purchaseDate}}</td>
+                    </tr>
+                {{/tickets}}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Aqui, você precisa garantir que o token seja passado para a requisição
+        let token = localStorage.getItem('token');
+
+        if (!token) {
+            alert('Você precisa estar logado para acessar o histórico!');
+            window.location.href = '/login';  // Redireciona para a página de login
+        }
+
+        // Realiza a requisição para pegar o histórico de compras
+        fetch('/tickets/history', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token  // Envia o token no cabeçalho da requisição
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.tickets) {
+                // Preenche a tabela com os dados do histórico
+                const tbody = document.querySelector('tbody');
+                data.tickets.forEach(ticket => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${ticket.name}</td>
+                        <td>${ticket.quantity}</td>
+                        <td>${ticket.purchaseDate}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                alert('Você ainda não comprou nenhum ingresso!');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao carregar o histórico:', error);
+            alert('Erro ao carregar o histórico de compras.');
+        });
+    </script>
+</body>
+</html>

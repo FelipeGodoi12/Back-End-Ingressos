@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>{{title}}</h1>
+
+    <!-- Formulário para inserir o token manualmente -->
+    <div>
+        <label for="token-input">Digite seu token:</label>
+        <input type="text" id="token-input" placeholder="Digite o token aqui">
+        <button id="verificar-token">Verificar Token</button>
+    </div>
+
+    <div>
+        <h2>Ingressos Disponíveis</h2>
+        {{#tickets}}
+            <div>
+                <h3>{{name}}</h3>
+                <p>Preço: R$ {{price}}</p>
+                <p>Estoque disponível: {{stock}}</p>
+                <form action="/tickets/buy" method="POST">
+                    <input type="hidden" name="ticketId" value="{{_id}}">
+                    <input type="number" name="quantity" min="1" max="{{stock}}" required>
+                    <button type="submit">Comprar</button>
+                </form>
+            </div>
+        {{/tickets}}
+    </div>
+
+    <script>
+        // Tenta pegar o token do localStorage
+        let token = localStorage.getItem('token') || document.querySelector('#token-input').value;
+
+        // Exemplo de como você pode usar o token na requisição
+        document.querySelector('#verificar-token').addEventListener('click', function () {
+            if (token) {
+                alert('Token verificado: ' + token);
+                // Agora você pode adicionar o token ao cabeçalho das requisições de compra de ingressos
+            } else {
+                alert('Por favor, forneça um token válido.');
+            }
+        });
+    </script>
+</body>
+</html>

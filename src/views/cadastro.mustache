@@ -1,0 +1,44 @@
+<form action="/cadastro" method="POST">
+    <label>Nome:</label>
+    <input type="text" name="username" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Senha:</label>
+    <input type="password" name="password" required>
+
+    <button type="submit">Cadastrar</button>
+</form>
+
+<script>
+    document.querySelector('#form-login').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+
+        fetch('/login', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Resposta do servidor:', data); // Verifique o que o servidor está retornando
+            if (data.token) {
+                console.log('Token recebido:', data.token); // Verifique o token que o servidor enviou
+                localStorage.setItem('token', data.token);  // Armazenando o token no localStorage
+                console.log('Token armazenado no localStorage:', localStorage.getItem('token')); // Verifique se foi armazenado
+                window.location.href = '/ingressos';  
+            } else {
+                alert('Erro ao fazer login');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+    });
+</script>
+
+
+
+

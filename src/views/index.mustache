@@ -1,0 +1,31 @@
+{{! Layout base para todas as páginas }}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Venda de Ingressos</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Início</a></li>
+                <li><a href="/cadastro">Cadastro</a></li>
+                <li><a href="/tickets/history">Histórico de Compras</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/ingressos">Eventos disponíveis</a></li>
+            </ul>
+        </nav>
+    
+    </header>
+    <main>
+        {{{body}}}
+    </main>
+    <footer>
+        <p>&copy; 2025 Sistema de Ingressos</p>
+    </footer>
+</body>
+</html>

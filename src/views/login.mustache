@@ -1,0 +1,50 @@
+<!-- login.mustache -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>Login</h1>
+
+    <form id="form-login">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="senha" placeholder="Senha" required>
+        <button type="submit">Entrar</button>
+    </form>
+
+    <script>
+        document.querySelector('#form-login').addEventListener('submit', function (event) {
+        event.preventDefault()
+
+        const formData = new FormData(event.target)
+        const data = new URLSearchParams(formData).toString() // Garantindo que os dados sejam passados no formato correto
+
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',  // Garantindo o tipo correto de envio dos dados
+            },
+            body: data,  // Envia os dados do formulário
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                // Armazena o token no localStorage
+                localStorage.setItem('token', data.token)
+                window.location.href = '/ingressos'
+            } else {
+                alert('Erro ao fazer login: ' + data.message) // Exibe a mensagem de erro
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error)
+        })
+        console.log('Email:', formData.get('email'));  // Veja o que está sendo enviado
+        console.log('Senha:', formData.get('senha'));
+    })
+
+    </script>
+</body>
+</html>
